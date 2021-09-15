@@ -13,7 +13,7 @@ module RedmineTinyFeatures
       )
       add_available_filter(
         "assigned_to_id",
-        :type => :list_optional, :values => lambda { author_values_with_pagination }
+        :type => :list_optional, :values => lambda { assigned_to_values_with_pagination }
       )
       add_available_filter(
         "updated_by",
