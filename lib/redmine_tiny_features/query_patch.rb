@@ -1,6 +1,6 @@
 class Query < ActiveRecord::Base
   def principals_with_pagination(term = '', limit = 0, page = 0)
-    @principal ||= begin
+   begin
       principals = []
       if project
         principals += Principal.member_of_with_pagination(project, term, limit, page).visible
