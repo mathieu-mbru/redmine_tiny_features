@@ -84,8 +84,8 @@ function addSelect2ToSelectTagsForTinyFeatures() {
       containerCss: {width: '300px', minwidth: '300px'},
       width: 'style'
     });
+    updateSelect2ForElements();
   }
-  updateSelect2ForElements();
 }
 
 function setConfigurationForSelect2(element, url) {
