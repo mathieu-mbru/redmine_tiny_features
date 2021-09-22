@@ -93,7 +93,6 @@ function setConfigurationForSelect2(element, url) {
     containerCss: {width: '268px', minwidth: '268px'},
     width: 'style',
     tags: false,
-    multiple: true,
     language: {
         noResults: function () {
           return "Aucun résultat trouvé..";
