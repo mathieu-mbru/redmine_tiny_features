@@ -28,9 +28,67 @@ $(document).ready(function(){
   function toggleVisibilityInit() {
     $('input[data-disables], input[data-enables], input[data-shows]').each(toggleVisibilityOnChange);
   }
+ });
+
+// check if plugin redmine_datetime_custom_field installed
+function redminePluginDatetimeCustomFieldInstalled() {
+  return !(typeof buildDateTimeFilterRow === "undefined")
+}
+
+$(function() {
+  if (!redminePluginDatetimeCustomFieldInstalled()) {
+    addFilter = function (field, operator, values) {
+      var fieldId = field.replace('.', '_');
+      var tr = $('#tr_'+fieldId);
+
+      var filterOptions = availableFilters[field];
+      if (!filterOptions) return;
+
+      if (filterOptions['remote'] && filterOptions['values'] == null) {
+        $.getJSON(filtersUrl, {'name': field}).done(function(data) {
+          filterOptions['values'] = data;
+          addFilter(field, operator, values) ;
+        });
+        return;
+      }
+
+      if (tr.length > 0) {
+        tr.show();
+      } else {
+        buildFilterRow(field, operator, values);
+      }
+      $('#cb_'+fieldId).prop('checked', true);
+      toggleFilter(field);
+      toggleMultiSelectIconInit();
+      $('#add_filter_select').val('').find('option').each(function() {
+        if ($(this).attr('value') == field) {
+          $(this).attr('disabled', true);
+        }
+      });
+
+      addSelect2ToSelectTagsForTinyFeatures();
+    }
+  }
 });
 
-function setSelect2ForElement(element, url) {
+// override for addSelect2ToSelectTags, because of addFilter takes time ,we should wait for it to finish
+addSelect2ToSelectTags = function(){
+  $(document).ready(function(){
+    addSelect2ToSelectTagsForTinyFeatures();
+  });
+}
+
+function addSelect2ToSelectTagsForTinyFeatures() {
+  if ((typeof $().select2) === 'function') {
+    $('#filters select.value').select2({
+      containerCss: {width: '300px', minwidth: '300px'},
+      width: 'style'
+    });
+  }
+  updateSelect2ForElements();
+}
+
+function setConfigurationForSelect2(element, url) {
   element.select2({
     containerCss: {width: '268px', minwidth: '268px'},
     width: 'style',
@@ -41,7 +99,7 @@ function setSelect2ForElement(element, url) {
           return "Aucun résultat trouvé..";
         },
         searching: function() {
-            return "Recherche...";
+          return "Recherche...";
         }
     },
     ajax: { url: url,
@@ -60,7 +118,7 @@ function setSelect2ForElement(element, url) {
           maxPage = Math.ceil(data.total / 20);
           return {
               results: data.results,
-               pagination: {
+                pagination: {
                   more: ((params.page * 20) < data.total) && (data.results.length < data.total) && (maxPage > params.page + 1)
               }
           };
@@ -68,6 +126,5 @@ function setSelect2ForElement(element, url) {
         cache: true
       },
     minimumInputLenght: 20,
-
   });
 }
