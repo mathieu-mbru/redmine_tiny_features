@@ -4,7 +4,7 @@ class Principal < ActiveRecord::Base
 
    # Principals that are members of a collection of projects with pagination
   scope :member_of_with_pagination, (lambda do |projects, term, limit, page|
-    limit = Principal.count if limit == 0 # this condition for get number of total
+    limit = Principal.count if limit == 0 # this condition In order to get all users
     projects = [projects] if projects.is_a?(Project)
     if projects.blank?
       where("1=0")
@@ -20,7 +20,7 @@ class Principal < ActiveRecord::Base
 
   end)
 
-   # the count of principals that are members of a collection of projects with pagination
+   # the count of principals that are members of a collection of projects with search
   scope :count_member_of_with_search, (lambda do |projects, term|
     projects = [projects] if projects.is_a?(Project)
     if projects.blank?
@@ -37,7 +37,7 @@ class Principal < ActiveRecord::Base
 
   end)
 
-   # the count of principals active that are members of a collection of projects with pagination
+   # the count of principals active that are members of a collection of projects with search
   scope :count_active_member_of_with_search, (lambda do |projects, term|
     projects = [projects] if projects.is_a?(Project)
     if projects.blank?
