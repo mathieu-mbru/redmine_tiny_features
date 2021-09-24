@@ -9,19 +9,19 @@ module RedmineTinyFeatures
 
       add_available_filter(
         "author_id",
-        :type => :list, :values => lambda { author_values_with_pagination }
+        :type => :list, :values => lambda { [] }
       )
       add_available_filter(
         "assigned_to_id",
-        :type => :list_optional, :values => lambda { assigned_to_values_with_pagination }
+        :type => :list_optional, :values => lambda { [] }
       )
       add_available_filter(
         "updated_by",
-        :type => :list, :values => lambda { author_values_with_pagination }
+        :type => :list, :values => lambda { [] }
       )
       add_available_filter(
         "last_updated_by",
-        :type => :list, :values => lambda { author_values_with_pagination }
+        :type => :list, :values => lambda { [] }
       )
     end
     
