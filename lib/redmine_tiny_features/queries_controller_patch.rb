@@ -5,42 +5,45 @@ class QueriesController
   def author_values_pagination
 
     total_query = Query.new
-    total = total_query.author_values_with_pagination(params['term'], 0, 0)
+    total = total_query.count_author_values_with_search(params['term'])
+
+    # Calculating the number of active users in order to know the page number on which we will put the label locked
+    total_active_query = Query.new
+    total_active = total_active_query.count_active_author_values_with_search(params['term'])
 
     # pass the maxPage for add user_anonymous in the last page
-    maxPage =  (total.count.to_f / params['page_limit'].to_i).ceil
+    maxPage =  (total.to_f / params['page_limit'].to_i).ceil
 
     issue_query = Query.new
     values = issue_query.author_values_with_pagination(params['term'], params['page_limit'], params['page'], maxPage)
 
     render :json => {
-      :results => get_data_for_pagination(total, values, true, maxPage),
-      :total =>  total.count,
+      :results => get_data_for_pagination(total, total_active, values, true, maxPage),
+      :total =>  total,
     }
 
   end
 
   def assigned_to_values_pagination
     total_query = Query.new
-    total = total_query.assigned_to_values_with_pagination(params['term'], 0, 0)
+    total = total_query.count_assigned_to_values_with_search(params['term'])
+
+    # Calculating the number of active users in order to know the page number on which we will put the label locked
+    total_active_query = Query.new
+    total_active = total_active_query.count_active_assigned_to_values_with_search(params['term'])
 
     issue_query = Query.new
     values = issue_query.assigned_to_values_with_pagination(params['term'], params['page_limit'], params['page'])
 
     render :json => {
-      :results => get_data_for_pagination(total, values),
-      :total =>  total.count,
+      :results => get_data_for_pagination(total, total_active, values),
+      :total =>  total,
     }
   end
 
   private
 
-  def get_data_for_pagination(total, values, with_anonymous = false, maxPage = 1)
-    # Calculating the number of active users in order to know the page number on which we will put the label locked
-    total_active = 0
-    total.each  do |val|
-      total_active += 1  if val[2].present? && val[2] == l("status_active")
-    end
+  def get_data_for_pagination(total, total_active, values, with_anonymous = false, maxPage = 1)
 
     if total_active == 0
       page_locked = params['page'].to_i
