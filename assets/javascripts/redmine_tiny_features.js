@@ -99,6 +99,9 @@ function setConfigurationForSelect2(element, url) {
         },
         searching: function() {
           return "Recherche...";
+        },
+        loadingMore: function() {
+          return "Charger plus de résultats...";
         }
     },
     ajax: { url: url,
