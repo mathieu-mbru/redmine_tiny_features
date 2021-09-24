@@ -9,11 +9,11 @@ module RedmineTinyFeatures
 
       add_available_filter(
         "user_id",
-        :type => :list_optional, :values => lambda { author_values_with_pagination }
+        :type => :list_optional, :values => lambda { [] }
       )
       add_available_filter(
         "author_id",
-        :type => :list_optional, :values => lambda { author_values_with_pagination }
+        :type => :list_optional, :values => lambda { [] }
       )
     end
     
