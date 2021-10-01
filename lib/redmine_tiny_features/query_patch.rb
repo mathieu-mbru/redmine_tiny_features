@@ -111,4 +111,32 @@ class Query < ActiveRecord::Base
     count +=1 if User.current.logged? && l(:label_me).include?(term)
     count
   end
+
+  # override this function to handle the case of me
+  def available_filters_as_json
+    json = {}
+    available_filters.each do |field, filter|
+      options = {:type => filter[:type], :name => filter[:name]}
+      options[:remote] = true if filter.remote
+
+      if has_filter?(field) || !filter.remote
+        options[:values] = filter.values
+        if options[:values] && values_for(field)
+          missing = Array(values_for(field)).select(&:present?) - options[:values].map{|v| v[1]}
+
+          if missing.any? && respond_to?(method = "find_#{field}_filter_values")
+            me_found = false
+            if missing.include?("me")
+              missing[missing.index("me")] = User.current.id
+              me_found = true
+            end
+            options[:values] += send(method, missing)
+            options[:values][options[:values].index([User.current.name, User.current.id.to_s])] = ["<< #{l(:label_me)} >>","me"] if me_found
+          end
+        end
+      end
+      json[field] = options.stringify_keys
+    end
+    json
+  end
 end
