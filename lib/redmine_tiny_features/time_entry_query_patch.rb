@@ -1,6 +1,16 @@
 require_dependency 'query'
 require_dependency 'time_entry_query'
 
+class TimeEntryQuery < Query
+
+  def find_assigned_to_id_filter_values(values)
+    Principal.visible.where(:id => values).map {|p| [p.name, p.id.to_s]}
+  end
+  alias :find_author_id_filter_values :find_assigned_to_id_filter_values
+  alias :find_user_id_filter_values :find_assigned_to_id_filter_values
+
+end
+
 module RedmineTinyFeatures
   module TimeEntryQueryPatch
 

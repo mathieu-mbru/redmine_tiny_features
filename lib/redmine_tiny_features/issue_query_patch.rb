@@ -1,6 +1,13 @@
 require_dependency 'query'
 require_dependency 'issue_query'
 
+class IssueQuery < Query
+
+  alias :find_updated_by_filter_values :find_assigned_to_id_filter_values
+  alias :find_last_updated_by_filter_values :find_assigned_to_id_filter_values
+
+end
+
 module RedmineTinyFeatures
   module IssueQueryPatch
 
