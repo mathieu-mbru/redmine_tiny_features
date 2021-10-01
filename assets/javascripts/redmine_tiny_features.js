@@ -71,7 +71,12 @@ $(function() {
   }
 });
 
-// override for addSelect2ToSelectTags, because of addFilter takes time ,we should wait for it to finish
+/*
+  Override for addSelect2ToSelectTags, because of addFilter takes time ,we should wait for it to finish.
+  We use this method of override by variable to ensure that it is executed even if the function addSelect2ToSelectTags of plugin
+  redmine_datetime_custom_field installed loaded after  addSelect2ToSelectTags of this plugin
+*/
+
 addSelect2ToSelectTags = function(){
   $(document).ready(function(){
     addSelect2ToSelectTagsForTinyFeatures();
@@ -129,4 +134,9 @@ function setConfigurationForSelect2(element, url) {
       },
     minimumInputLenght: 20,
   });
+  // set by default the first value (me)
+  if (element.select2('data').length == 0) {
+    var newOption = new Option('<< moi >>', 'me', false, false);
+    element.append(newOption).trigger('change');
+  }
 }
