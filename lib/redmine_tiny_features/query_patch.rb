@@ -18,53 +18,30 @@ class Query < ActiveRecord::Base
     end
   end
 
-  def count_principals_with_search(term = '')
+  def count_principals_with_search(term = '', all = true)
    begin
       principals = 0
       if project
-        principals += Principal.count_member_of_with_search(project, term)
+        principals += Principal.count_member_of_with_search(project, term, all)
         unless project.leaf?
-          principals += Principal.count_member_of_with_search(project.descendants.visible, term)
+          principals += Principal.count_member_of_with_search(project.descendants.visible, term, all)
         end
       else
-        principals += Principal.count_member_of_with_search(all_projects, term)
+        principals += Principal.count_member_of_with_search(all_projects, term, all)
       end
 
       principals
     end
   end
 
-  def count_active_principals_with_search(term = '')
-   begin
-      principals = 0
-      if project
-        principals += Principal.count_active_member_of_with_search(project, term)
-        unless project.leaf?
-          principals += Principal.count_active_member_of_with_search(project.descendants.visible, term)
-        end
-      else
-        principals += Principal.count_active_member_of_with_search(all_projects, term)
-      end
-
-      principals
-    end
-  end
-
+  # use the same logic of redmine function users call principals
   def users_with_pagination(term = '', limit = 0, page = 0)
     principals_with_pagination(term, limit, page)
   end
 
-  def count_author_values_with_search(term = '')
+  def count_author_values_with_search(term = '', all = true)
     term ||= ''
-    count = count_principals_with_search(term)
-    count +=1 if User.current.logged? && l(:label_me).include?(term)
-    count +=1 if l(:label_user_anonymous).include?(term)
-    count
-  end
-
-  def count_active_author_values_with_search(term = '')
-    term ||= ''
-    count = count_active_principals_with_search(term)
+    count = count_principals_with_search(term, all)
     count +=1 if User.current.logged? && l(:label_me).include?(term)
     count +=1 if l(:label_user_anonymous).include?(term)
     count
@@ -98,16 +75,9 @@ class Query < ActiveRecord::Base
     assigned_to_values
   end
 
-  def count_assigned_to_values_with_search(term = '')
+  def count_assigned_to_values_with_search(term = '', all = true)
     term ||= ''
-    count = count_principals_with_search(term)
-    count +=1 if User.current.logged? && l(:label_me).include?(term)
-    count
-  end
-
-  def count_active_assigned_to_values_with_search(term = '')
-    term ||= ''
-    count = count_active_principals_with_search(term)
+    count = count_principals_with_search(term, all)
     count +=1 if User.current.logged? && l(:label_me).include?(term)
     count
   end
