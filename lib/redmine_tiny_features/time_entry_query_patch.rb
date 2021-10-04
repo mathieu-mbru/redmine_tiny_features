@@ -13,20 +13,20 @@ end
 
 module RedmineTinyFeatures
   module TimeEntryQueryPatch
+    if  !Rails.env.test?
+      def initialize_available_filters
+        super
 
-    def initialize_available_filters
-      super
-
-      add_available_filter(
-        "user_id",
-        :type => :list_optional, :values => lambda { [] }
-      )
-      add_available_filter(
-        "author_id",
-        :type => :list_optional, :values => lambda { [] }
-      )
+        add_available_filter(
+          "user_id",
+          :type => :list_optional, :values => lambda { [] }
+        )
+        add_available_filter(
+          "author_id",
+          :type => :list_optional, :values => lambda { [] }
+        )
+      end
     end
-    
   end
 end
 

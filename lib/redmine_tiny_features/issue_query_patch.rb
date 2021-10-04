@@ -10,28 +10,28 @@ end
 
 module RedmineTinyFeatures
   module IssueQueryPatch
+    if  !Rails.env.test?
+      def initialize_available_filters
+        super
 
-    def initialize_available_filters
-      super
-
-      add_available_filter(
-        "author_id",
-        :type => :list, :values => lambda { [] }
-      )
-      add_available_filter(
-        "assigned_to_id",
-        :type => :list_optional, :values => lambda { [] }
-      )
-      add_available_filter(
-        "updated_by",
-        :type => :list, :values => lambda { [] }
-      )
-      add_available_filter(
-        "last_updated_by",
-        :type => :list, :values => lambda { [] }
-      )
+        add_available_filter(
+          "author_id",
+          :type => :list, :values => lambda { [] }
+        )
+        add_available_filter(
+          "assigned_to_id",
+          :type => :list_optional, :values => lambda { [] }
+        )
+        add_available_filter(
+          "updated_by",
+          :type => :list, :values => lambda { [] }
+        )
+        add_available_filter(
+          "last_updated_by",
+          :type => :list, :values => lambda { [] }
+        )
+      end
     end
-    
   end
 end
 
