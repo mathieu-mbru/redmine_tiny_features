@@ -5,11 +5,11 @@ class QueriesController
   def author_values_pagination
 
     total_query = Query.new
-    total = total_query.count_author_values_with_search(params['term'])
+    total = total_query.count_author_values_with_search(params['term'], true)
 
     # Calculating the number of active users in order to know the page number on which we will put the label locked
     total_active_query = Query.new
-    total_active = total_active_query.count_active_author_values_with_search(params['term'])
+    total_active = total_active_query.count_author_values_with_search(params['term'], false)
 
     # pass the maxPage for add user_anonymous in the last page
     maxPage =  (total.to_f / params['page_limit'].to_i).ceil
@@ -26,11 +26,11 @@ class QueriesController
 
   def assigned_to_values_pagination
     total_query = Query.new
-    total = total_query.count_assigned_to_values_with_search(params['term'])
+    total = total_query.count_assigned_to_values_with_search(params['term'], true)
 
     # Calculating the number of active users in order to know the page number on which we will put the label locked
     total_active_query = Query.new
-    total_active = total_active_query.count_active_assigned_to_values_with_search(params['term'])
+    total_active = total_active_query.count_assigned_to_values_with_search(params['term'], false)
 
     issue_query = Query.new
     values = issue_query.assigned_to_values_with_pagination(params['term'], params['page_limit'], params['page'])
