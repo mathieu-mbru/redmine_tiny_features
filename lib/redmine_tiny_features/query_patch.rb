@@ -34,7 +34,7 @@ class Query < ActiveRecord::Base
     end
   end
 
-  # use the same logic of redmine function users call principals
+  # In order to use the same logic of redmine function users call principals
   def users_with_pagination(term = '', limit = 0, page = 0)
     principals_with_pagination(term, limit, page)
   end
