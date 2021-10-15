@@ -15,3 +15,4 @@ fr:
   default_project: Projet par défaut pour les nouvelles demandes
   label_general_data: Données générales
   label_trakers_permissions: Permissions des trackers
+  setting_empty_available_filters_by_default: Vider les filtres disponibles par défaut
