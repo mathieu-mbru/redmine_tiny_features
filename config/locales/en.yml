@@ -21,3 +21,13 @@ en:
   setting_journalize_note_deletion: Journalize the note deletion
   label_of: 'of '
   text_note_deleted: "%{label} (#%{old}) deleted"
+  setting_use_select2: Apply select2 to filters fields
+  label_range: "Range"
+  label_min_max_range: "Min / Max values"
+  label_steps: "Step"
+  field_module_enabled: "Enabled modules"
+  field_prevent_issue_copy: "Prevent issue copy"
+  setting_disable_email_hiding: "Disable the emails hiding function"
+  permission_always_see_user_email_addresses: "Always see user email addresses"
+  project_module_user_email: "User email addresses"
+  setting_do_not_preload_issue_edit_form: "Load the issue's edit form only by clicking on the Edit link"

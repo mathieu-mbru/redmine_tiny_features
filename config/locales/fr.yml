@@ -21,3 +21,13 @@ fr:
   setting_journalize_note_deletion: Traçabilité des effacements de note
   label_of: 'de '
   text_note_deleted: "%{label} (#%{old}) supprimée"
+  setting_use_select2: Activer Select2 pour faciliter l'utilisation des listes déroulantes
+  label_range: "Intervalle"
+  label_min_max_range: "Valeurs minimale et maximale"
+  label_steps: "Incrément"
+  field_module_enabled: "Modules activés"
+  field_prevent_issue_copy: "Empêcher la copie de demandes"
+  setting_disable_email_hiding: "Désactiver la fonction de masquage des emails"
+  permission_always_see_user_email_addresses: "Toujours voir les adresses mail des utilisateurs"
+  project_module_user_email: "Adresses mail des utilisateurs"
+  setting_do_not_preload_issue_edit_form: "Charger le formulaire d'édition de la demande uniquement en cliquant sur le lien Modifier"

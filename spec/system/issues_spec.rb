@@ -115,5 +115,64 @@ RSpec.describe "creating an issue", type: :system do
     end
   end
 
-end
+  describe "option prevent copy issues" do
+    it "Show link copy when its tracker allows copy issues page(issue/show)" do
+      visit 'issues/2'
+      expect(page).to have_selector('a', class: 'icon-copy', text: 'Copy')
+    end
 
+    it "Show link copy when its tracker allows copy issues page(issue/index)" do
+      visit 'issues/'
+
+      find('tr#issue-2>td.buttons>a.icon-actions').click
+      expect(page).to have_selector('a.icon-copy')
+    end
+
+    it "Hide link copy when its tracker prevents copy issues page(issue/show)" do
+      tracker_test = Tracker.find(2)
+      tracker_test.prevent_issue_copy = true
+      tracker_test.save
+
+      visit 'issues/2'
+      expect(page).to_not have_selector('a', class: 'icon-copy', text: 'Copy')
+    end
+
+    it "Hide link copy when its tracker prevents copy issues page(issue/index)" do
+      tracker_test = Tracker.find(2)
+      tracker_test.prevent_issue_copy = true
+      tracker_test.save
+
+      visit 'issues/'
+      find('tr#issue-2>td.buttons>a.icon-actions').click
+      expect(page).to_not have_selector('a.icon-copy')
+    end
+  end
+
+  describe "Load the issue's edit" do
+    it "Load the form when the option (do_not_preload_issue_edit_form) is unselected" do
+      visit 'issues/2'
+      expect(page).to have_selector('#issue-form', visible: :hidden)
+    end
+
+    it "only on click button edit and the option (do_not_preload_issue_edit_form) is selected" do
+      Setting.send "plugin_redmine_tiny_features=", {
+        "warning_message_on_closed_issues" => "1",
+        "default_open_status" => "2",
+        "default_project" => "1",
+        "do_not_preload_issue_edit_form" => "1",
+      }
+      visit 'issues/2'
+      expect(page).to_not have_selector('#issue-form', visible: :hidden)
+      find('.icon-edit',  match: :first).click
+      # wait for render form
+      sleep 10      
+      expect(page).to have_selector('#issue-form')
+      Setting.send "plugin_redmine_tiny_features=", {
+        "warning_message_on_closed_issues" => "1",
+        "default_open_status" => "2",
+        "default_project" => "1",
+        "do_not_preload_issue_edit_form" => "0",
+      }
+    end
+  end
+end
